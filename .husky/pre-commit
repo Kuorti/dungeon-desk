@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BRANCH_NAME_PATTERN="^(feature|bugfix|hotfix|release)\/DUNG-[0-9]+_[a-z0-9_-]+$"
+
+branch_name="$(git symbolic-ref --short HEAD)"
+
+if ! echo "$branch_name" | grep -E "$BRANCH_NAME_PATTERN" > /dev/null; then
+  echo "Error: branch name '$branch_name' does not match the required pattern."
+  echo "Allowed branch names are: feature|bugfix|hotfix|release/DUNG-<number>_<short_description>"
+  exit 1
+fi
+
+npm run lint-staged
