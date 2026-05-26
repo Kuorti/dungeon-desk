@@ -5,7 +5,7 @@
     "no-descending-specificity": null,
     "selector-pseudo-element-no-unknown": true,
     "selector-class-pattern": [
-      "^[a-z0-9\\-]+$",
+      "^[a-z][a-zA-Z0-9_-]+$",
       {
         "message": "Expected class selector to be kebab-case",
         "severity": "warning"

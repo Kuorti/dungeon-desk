@@ -1,0 +1,45 @@
+@use "@styles/variables" as *;
+
+@font-face {
+  font-family: Vinque;
+  src: url("@src/shared/assets/fonts/vinque.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: Vinque, sans-serif;
+  margin: 0;
+  color: $color-main-text;
+  font-size: $size-content-m;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  border: none;
+}
+
+p {
+  font-size: $size-content-m;
+}
+
+h2 {
+  font-size: $size-header-l;
+}

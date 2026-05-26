@@ -1,0 +1,22 @@
+@use "@styles/variables" as *;
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 270px;
+  justify-content: center;
+  gap: $spacing-xs;
+}
+
+.button {
+  cursor: pointer;
+  display: inline-block;
+  width: $size-clickable-element-xs;
+  height: $size-clickable-element-xs;
+  border: 1px solid $color-border-simple;
+  background: transparent;
+
+  &.active {
+    background: $color-border-simple;
+  }
+}

@@ -1,0 +1,9 @@
+.mainLayout {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(rgb(10 25 30 / 75%), rgb(10 25 30 / 75%)),
+    url("@src/shared/assets/background_abstract.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

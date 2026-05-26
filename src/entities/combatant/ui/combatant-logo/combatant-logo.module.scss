@@ -1,0 +1,16 @@
+@use "@styles/variables" as *;
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size-block-s;
+  height: $size-block-s;
+  border: 1px solid $color-border-simple;
+  padding: $spacing-s;
+  box-sizing: border-box;
+
+  .svgIcon {
+    fill: $color-main-text;
+  }
+}
