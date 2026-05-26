@@ -1,0 +1,28 @@
+@use "@styles/variables" as *;
+
+.wrapper {
+  min-height: 600px;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: $border-radius;
+  background-color: rgb(10 15 15 / 75%);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 20px 50px rgb(0 0 0 / 90%);
+  padding: $spacing-m;
+}
+
+.combatantsList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-s;
+}
+
+.bottomButtons {
+  display: flex;
+  align-self: flex-end;
+  position: relative;
+  top: -8px;
+  left: -7px;
+  gap: $spacing-s;
+  margin-top: auto;
+}

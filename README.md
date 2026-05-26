@@ -1,16 +1,53 @@
-# React + Vite
+# 🧙‍♂️ Dungeon Desk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tool for Dungeon Masters to manage D&D combat encounters.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ⚙️ Core Features (MVP)
 
-## React Compiler
+### ⚔️ Combat System
+- start combat
+- combat participants list
+- initiative order
+- highlight current turn
+- switch to next turn
+- finish combat with loot and XP rewards
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+### ❤️ HP Management
+- quick HP updates (+ / -)
+- manage player and enemy conditions
+- death saving throw tracking
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+### 🎲 Dice Rolls
+- d20 / d12 / d8 / d6 / d4
+- roll history
+- roll dice as a specific character
+
+---
+
+### 🤼 Encounters
+- create combat encounters in advance
+- add participants
+- save and load encounters
+
+---
+
+### 📝 Notes
+- quick DM notes
+- scene descriptions
+- NPC notes
+- campaign journal
+
+---
+
+## 👾 Tech Stack
+
+- React
+- TypeScript
+- Vite
+- React Router

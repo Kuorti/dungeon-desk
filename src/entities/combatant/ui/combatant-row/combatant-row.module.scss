@@ -1,0 +1,44 @@
+@use "@styles/variables" as *;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-m;
+  min-height: $size-block-m;
+  max-height: $size-block-m;
+  box-sizing: border-box;
+  padding: $spacing-s $spacing-m;
+  border: 1px solid $color-border-simple;
+  border-radius: $border-radius;
+  justify-content: space-between;
+
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-m;
+  }
+
+  .left {
+    .logo {
+      display: inline-block;
+      border: 1px solid $color-accent-warning;
+    }
+  }
+
+  .initiative {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-s;
+    min-width: 155px;
+    max-width: 155px;
+
+    .label {
+      font-size: $size-content-s;
+    }
+  }
+
+  &.isActive {
+    box-shadow: 0 0 15px $color-element-active;
+  }
+}

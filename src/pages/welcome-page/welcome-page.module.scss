@@ -1,0 +1,18 @@
+@use "@styles/variables" as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-l;
+  padding: $spacing-xl;
+}
+
+.header,
+.description {
+  text-align: center;
+}
+
+.button {
+  align-self: center;
+  margin-top: $spacing-xl;
+}

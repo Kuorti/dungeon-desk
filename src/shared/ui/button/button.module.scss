@@ -1,0 +1,46 @@
+@use "@styles/variables" as *;
+@use "sass:color";
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $color-main-text;
+  padding: $spacing-s;
+  border-radius: $border-radius;
+  background: linear-gradient(
+    135deg,
+    $color-accent-warning 0%,
+    color.adjust($color-accent-warning, $lightness: -12%) 100%
+  );
+
+  &:hover {
+    background-color: rgb(125 189 203 / 10%);
+  }
+
+  &--xs {
+    padding: $spacing-xs;
+    min-height: $size-button-xs;
+    max-height: $size-button-xs;
+  }
+
+  &--s {
+    padding: $spacing-s;
+    font-size: $size-content-s;
+    min-width: $size-button-s;
+    max-width: $size-button-s;
+    min-height: $size-button-s;
+    max-height: $size-button-s;
+  }
+
+  &--m {
+    padding: $spacing-s;
+    font-size: $size-content-m;
+  }
+
+  &--l {
+    padding: $spacing-l $spacing-xl;
+    text-transform: uppercase;
+  }
+}
