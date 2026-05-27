@@ -2,7 +2,7 @@ import styles from "./welcome-page.module.scss";
 import Button from "@src/shared/ui/button";
 import { useNavigate } from "react-router";
 import { routes } from "@src/shared/routes/routes.ts";
-import { useSessionStore } from "@src/shared/store/sessionStore.ts";
+import { useSessionStore } from "@src/features/session/store/sessionStore.ts";
 
 const WelcomePage = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const WelcomePage = () => {
       <p className={styles.description}>
         Run the fight. Track the chaos. Roll the dice. Stay in control.
       </p>
-      <Button onClick={handleStartSession} className={styles.button}>
+      <Button size={"l"} onClick={handleStartSession} className={styles.button}>
         Begin
       </Button>
     </main>

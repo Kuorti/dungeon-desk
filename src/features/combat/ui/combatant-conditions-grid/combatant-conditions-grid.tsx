@@ -1,4 +1,4 @@
-import { useCombatStore } from "@src/shared/store/combatStore.ts";
+import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
 import { conditions } from "@src/shared/constants/conditions.ts";
 import styles from "./combatant-conditions-grid.module.scss";
 
@@ -8,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-export const CombatantConditionsGrid = ({ combatantId, activeConditionIds, className }: Props) => {
+const CombatantConditionsGrid = ({ combatantId, activeConditionIds, className }: Props) => {
   const toggleCondition = useCombatStore((s) => s.toggleCombatantCondition);
 
   return (
@@ -29,3 +29,5 @@ export const CombatantConditionsGrid = ({ combatantId, activeConditionIds, class
     </div>
   );
 };
+
+export default CombatantConditionsGrid;

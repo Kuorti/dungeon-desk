@@ -1,4 +1,5 @@
 import { Combatant } from "@src/entities/combatant/model/combatant.ts";
+import { CombatActions } from "@src/features/combat/types/combat-actions.ts";
 
 export interface Combat {
   id: string | null;
@@ -6,3 +7,5 @@ export interface Combat {
   combatants: Record<string, Combatant>;
   currentCombatantId: string | null;
 }
+
+export type CombatState = Combat & CombatActions;

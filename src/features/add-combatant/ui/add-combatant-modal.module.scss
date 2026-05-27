@@ -1,0 +1,35 @@
+@use "@styles/variables" as *;
+
+.wrapper {
+  min-width: 570px;
+  max-width: 570px;
+}
+
+.form,
+.control label {
+  display: flex;
+}
+
+.form {
+  flex-direction: column;
+  gap: $spacing-m;
+}
+
+.control {
+  label {
+    gap: $spacing-s;
+    justify-content: space-between;
+  }
+
+  select,
+  input {
+    box-sizing: border-box;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  .error {
+    font-size: $size-content-s;
+    color: $color-element-active;
+  }
+}

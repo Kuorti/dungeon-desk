@@ -1,4 +1,4 @@
-import { useCombatStore } from "@src/shared/store/combatStore.ts";
+import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
 import styles from "./hit-points-changer.module.scss";
 import Button from "@src/shared/ui/button";
 import { Combatant } from "@src/entities/combatant/model/combatant.ts";

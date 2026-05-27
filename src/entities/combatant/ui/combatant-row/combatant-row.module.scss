@@ -6,6 +6,7 @@
   gap: $spacing-m;
   min-height: $size-block-m;
   max-height: $size-block-m;
+  height: $size-block-m;
   box-sizing: border-box;
   padding: $spacing-s $spacing-m;
   border: 1px solid $color-border-simple;
@@ -16,7 +17,9 @@
   .right {
     display: flex;
     align-items: center;
+    flex-grow: 1;
     gap: $spacing-m;
+    height: 100%;
   }
 
   .left {
@@ -26,9 +29,14 @@
     }
   }
 
+  .right {
+    justify-content: flex-end;
+  }
+
   .initiative {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: $spacing-s;
     min-width: 155px;
     max-width: 155px;
@@ -36,6 +44,12 @@
     .label {
       font-size: $size-content-s;
     }
+  }
+
+  .conditions {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
   }
 
   &.isActive {

@@ -8,6 +8,7 @@ const Modal = ({
   title,
   children,
   footer,
+  className,
   closeOnOverlayClick = true,
 }: ModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -49,17 +50,12 @@ const Modal = ({
   return (
     <dialog
       ref={dialogRef}
-      className={styles.wrapper}
+      className={`${styles.wrapper} ${className}`}
       onClose={onClose}
       onClick={handleOverlayClick}
     >
       <div className={styles.container}>
-        <div className={styles.header}>
-          {title && <h2 className={styles.title}>{title}</h2>}
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-            &times;
-          </button>
-        </div>
+        <div className={styles.header}>{title && <h2 className={styles.title}>{title}</h2>}</div>
 
         <div className={styles.content}>{children}</div>
 
