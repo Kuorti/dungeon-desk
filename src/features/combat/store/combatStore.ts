@@ -1,19 +1,40 @@
 import { create } from "zustand/react";
 import { persist } from "zustand/middleware";
-import { Combat } from "@src/shared/types/combat.ts";
-import { CombatActions } from "@src/shared/types/combat-actions.ts";
+import { CombatState } from "@src/features/combat/types/combat.ts";
 import { conditions } from "@src/shared/constants/conditions.ts";
 import { Combatant } from "@src/entities/combatant/model/combatant.ts";
-
-type CombatState = Combat & CombatActions;
+import { getSortedCombatants } from "@src/features/combat/model/selectors.ts";
 
 export const useCombatStore = create<CombatState>()(
   persist(
     (set, get) => ({
       id: null,
       currentRound: 1,
-      currentCombatantId: null,
-      combatants: {} as Record<string, Combatant>,
+      currentCombatantId: "2",
+      combatants: {
+        "1": {
+          id: "1",
+          name: "Nastya",
+          isPlayer: true,
+          playerClass: "bard",
+          healthScore: 22,
+          temporalHealthScore: 0,
+          maxHealthScore: 22,
+          conditions: [],
+          initiative: 1,
+        },
+        "2": {
+          id: "2",
+          name: "Grisha",
+          isPlayer: true,
+          playerClass: "paladin",
+          healthScore: 22,
+          temporalHealthScore: 0,
+          maxHealthScore: 30,
+          conditions: [],
+          initiative: 1,
+        },
+      } as Record<string, Combatant>,
       setCombatId: (id) => set({ id }),
       setNextTurn: () => {
         const currentRound = get().currentRound;
@@ -58,6 +79,24 @@ export const useCombatStore = create<CombatState>()(
           },
         });
       },
+      selectNextCombatant: () => {
+        const { combatants, currentCombatantId, setNextTurn } = get();
+        const sorted = getSortedCombatants(combatants);
+
+        if (sorted.length === 0) {
+          return;
+        }
+
+        const currentIndex = sorted.findIndex((c) => c.id === currentCombatantId);
+        const nextIndex = currentIndex + 1;
+
+        if (nextIndex >= sorted.length) {
+          set({ currentCombatantId: sorted[0].id });
+          setNextTurn();
+        } else {
+          set({ currentCombatantId: sorted[nextIndex].id });
+        }
+      },
       toggleCombatantCondition: (combatantId: string, conditionId: string) => {
         const currentCombatants = get().combatants;
         const targetCombatant = currentCombatants[combatantId];
@@ -89,6 +128,15 @@ export const useCombatStore = create<CombatState>()(
               ...targetCombatant,
               conditions: updatedConditions,
             },
+          },
+        });
+      },
+      addCombatant: (newCombatant: Combatant) => {
+        const currentCombatants = get().combatants;
+        set({
+          combatants: {
+            ...currentCombatants,
+            [newCombatant.id]: newCombatant,
           },
         });
       },

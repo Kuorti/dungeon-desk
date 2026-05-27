@@ -19,6 +19,12 @@
     background-color: rgb(125 189 203 / 10%);
   }
 
+  &[disabled] {
+    pointer-events: none;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+
   &--xs {
     padding: $spacing-xs;
     min-height: $size-button-xs;
@@ -40,7 +46,8 @@
   }
 
   &--l {
-    padding: $spacing-l $spacing-xl;
-    text-transform: uppercase;
+    min-width: 340px;
+    padding: $spacing-l;
+    font-size: $size-content-l;
   }
 }

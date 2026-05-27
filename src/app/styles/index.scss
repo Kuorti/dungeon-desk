@@ -32,6 +32,25 @@ select {
   font-family: inherit;
 }
 
+input,
+textarea,
+select {
+  background: $color-background-controls;
+  border: 1px solid $color-border-simple;
+  color: $color-main-text;
+  font-size: $size-content-m;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+dialog {
+  &:focus {
+    outline: none;
+  }
+}
+
 button {
   border: none;
 }
@@ -42,4 +61,10 @@ p {
 
 h2 {
   font-size: $size-header-l;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
 }

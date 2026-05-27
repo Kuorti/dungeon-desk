@@ -38,8 +38,12 @@ export const CombatantLogo = ({ combatant }: Props) => {
   const IconComponent = combatant.playerClass ? CLASS_ICONS[combatant.playerClass] : null;
 
   return (
-    <span className={styles.logo}>
-      {combatant.isPlayer && IconComponent && <IconComponent className={styles.svgIcon} />}
-    </span>
+    <>
+      {combatant.isPlayer && IconComponent && (
+        <span className={styles.logo}>
+          <IconComponent className={styles.svgIcon} />
+        </span>
+      )}
+    </>
   );
 };
