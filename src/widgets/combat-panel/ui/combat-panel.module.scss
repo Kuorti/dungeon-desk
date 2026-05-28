@@ -1,7 +1,8 @@
 @use "@styles/variables" as *;
 
 .wrapper {
-  min-height: 600px;
+  min-height: calc(100vh - 96px);
+  max-height: calc(100vh - 96px);
   display: inline-flex;
   flex-direction: column;
   border-radius: $border-radius;
@@ -10,12 +11,27 @@
   box-shadow: 0 20px 50px rgb(0 0 0 / 90%);
   padding: $spacing-m;
   gap: $spacing-m;
+  position: relative;
 }
 
 .combatantsList {
   display: flex;
   flex-direction: column;
-  gap: $spacing-s;
+  gap: $spacing-m;
+  max-height: calc(100vh - 207px);
+  overflow: hidden auto;
+  margin-right: calc($spacing-m * -1);
+  padding: $spacing-m $spacing-m $spacing-m $spacing-s;
+}
+
+.row {
+  position: relative;
+
+  &:hover {
+    .deleteCombatantButton {
+      opacity: 1;
+    }
+  }
 }
 
 .bottomButtons {
@@ -26,4 +42,12 @@
   left: -7px;
   gap: $spacing-s;
   margin-top: auto;
+}
+
+.deleteCombatantButton {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  opacity: 0;
+  transition: opacity 0.4s;
 }

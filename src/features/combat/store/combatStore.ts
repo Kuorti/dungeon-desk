@@ -32,7 +32,7 @@ export const useCombatStore = create<CombatState>()(
           temporalHealthScore: 0,
           maxHealthScore: 30,
           conditions: [],
-          initiative: 1,
+          initiative: 3,
         },
       } as Record<string, Combatant>,
       setCombatId: (id) => set({ id }),
@@ -45,6 +45,7 @@ export const useCombatStore = create<CombatState>()(
       updateCombatantHealthScore: (combatantId: string, delta: number) => {
         const currentCombatants = get().combatants;
         const targetCombatant = currentCombatants[combatantId];
+        const { deleteCombatant, toggleCombatantCondition } = get();
 
         if (!targetCombatant) {
           return;
@@ -68,6 +69,10 @@ export const useCombatStore = create<CombatState>()(
           healthScore = healthScore + delta;
         }
 
+        if (healthScore < 0) {
+          healthScore = 0;
+        }
+
         set({
           combatants: {
             ...currentCombatants,
@@ -78,6 +83,15 @@ export const useCombatStore = create<CombatState>()(
             },
           },
         });
+
+        if (healthScore === 0) {
+          if (targetCombatant.isPlayer) {
+            const unconsciousId = "15";
+            toggleCombatantCondition(combatantId, unconsciousId);
+          } else {
+            deleteCombatant(combatantId);
+          }
+        }
       },
       selectNextCombatant: () => {
         const { combatants, currentCombatantId, setNextTurn } = get();
@@ -138,6 +152,19 @@ export const useCombatStore = create<CombatState>()(
             ...currentCombatants,
             [newCombatant.id]: newCombatant,
           },
+        });
+      },
+      deleteCombatant: (combatantId: string) => {
+        const { currentCombatantId, selectNextCombatant } = get();
+        const currentCombatants = get().combatants;
+        const { [combatantId]: _, ...restCombatants } = currentCombatants;
+
+        if (combatantId === currentCombatantId) {
+          selectNextCombatant();
+        }
+
+        set({
+          combatants: restCombatants,
         });
       },
     }),

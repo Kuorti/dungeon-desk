@@ -7,4 +7,5 @@ export interface CombatActions {
   updateCombatantHealthScore: (combatantId: string, delta: number) => void;
   toggleCombatantCondition: (combatantId: string, conditionId: string) => void;
   addCombatant: (combatant: Combatant) => void;
+  deleteCombatant: (combatantId: string) => void;
 }

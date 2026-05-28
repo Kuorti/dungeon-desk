@@ -1,17 +1,27 @@
 import { Combatant } from "@src/entities/combatant/model/combatant.ts";
 import styles from "./combatant-row.module.scss";
 import { CombatantLogo } from "@src/entities/combatant/ui/combatant-logo/combatant-logo.tsx";
-import { HitPointsChanger } from "@src/features/combat/ui/hit-points-changer/hit-points-changer.tsx";
-import CombatantConditionsGrid from "@src/features/combat/ui/combatant-conditions-grid";
+import { ReactNode } from "react";
 
 type Props = {
+  className: string;
   combatant: Combatant;
   isActive: boolean;
+  deleteButtonSlot?: ReactNode;
+  hpChangerSlot?: ReactNode;
+  conditionsGridSlot?: ReactNode;
 };
 
-const CombatantRow = ({ combatant, isActive = false }: Props) => {
+const CombatantRow = ({
+  combatant,
+  isActive = false,
+  deleteButtonSlot,
+  hpChangerSlot,
+  conditionsGridSlot,
+  className,
+}: Props) => {
   return (
-    <div className={`${styles.wrapper} ${isActive ? styles.isActive : ""}`}>
+    <div className={`${styles.wrapper} ${isActive ? styles.isActive : ""} ${className}`}>
       <div className={styles.left}>
         <CombatantLogo combatant={combatant}></CombatantLogo>
         <span className={styles.name}>{combatant.name}</span>
@@ -22,13 +32,10 @@ const CombatantRow = ({ combatant, isActive = false }: Props) => {
           <span className={styles.label}>Initiative</span>
           <span>{combatant.initiative}</span>
         </div>
-        <HitPointsChanger combatant={combatant} />
-        <CombatantConditionsGrid
-          className={styles.conditions}
-          combatantId={combatant.id}
-          activeConditionIds={combatant.conditions.map((condition) => condition.id)}
-        />
+        {hpChangerSlot}
+        {conditionsGridSlot}
       </div>
+      {deleteButtonSlot}
     </div>
   );
 };

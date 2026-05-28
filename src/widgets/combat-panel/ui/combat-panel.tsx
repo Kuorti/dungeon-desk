@@ -6,6 +6,9 @@ import { useState } from "react";
 import { selectSortedCombatants } from "@src/features/combat/model/selectors.ts";
 import { useShallow } from "zustand/react/shallow";
 import AddCombatantModal from "@src/features/add-combatant";
+import { HitPointsChanger } from "@src/features/combat/ui/hit-points-changer/hit-points-changer.tsx";
+import CombatantConditionsGrid from "@src/features/combat/ui/combatant-conditions-grid";
+import DeleteCombatantButton from "@src/features/combat/ui/delete-combatant";
 
 const CombatPanel = () => {
   const currentRound = useCombatStore((s) => s.currentRound);
@@ -27,9 +30,24 @@ const CombatPanel = () => {
         <div className={styles.combatantsList}>
           {sortedCombatants.map((combatant) => (
             <CombatantRow
+              className={styles.row}
               key={combatant.id}
               isActive={currentCombatantId === combatant.id}
               combatant={combatant}
+              deleteButtonSlot={
+                <DeleteCombatantButton
+                  combatantId={combatant.id}
+                  className={styles.deleteCombatantButton}
+                />
+              }
+              hpChangerSlot={<HitPointsChanger combatant={combatant} />}
+              conditionsGridSlot={
+                <CombatantConditionsGrid
+                  className={styles.conditions}
+                  combatantId={combatant.id}
+                  activeConditionIds={combatant.conditions.map((condition) => condition.id)}
+                />
+              }
             />
           ))}
         </div>
@@ -38,7 +56,7 @@ const CombatPanel = () => {
             Add combatant
           </Button>
           <Button onClick={handleSelectNextCombatant} size={"m"}>
-            Next combatant
+            Next turn
           </Button>
         </div>
       </div>
