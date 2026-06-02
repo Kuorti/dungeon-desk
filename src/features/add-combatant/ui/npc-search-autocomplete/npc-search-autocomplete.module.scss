@@ -1,0 +1,19 @@
+@use "@styles/variables" as *;
+
+.dropdown {
+  position: absolute;
+  background: $color-background-modal;
+  border-radius: $border-radius;
+  border: 1px solid $color-element-active;
+  max-height: 300px;
+  overflow: auto;
+
+  .dropdownElement {
+    cursor: pointer;
+    transition: color 0.4s;
+
+    &:hover {
+      color: $color-main-selected;
+    }
+  }
+}

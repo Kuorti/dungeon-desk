@@ -46,6 +46,8 @@ select {
 }
 
 dialog {
+  overflow: visible;
+
   &:focus {
     outline: none;
   }

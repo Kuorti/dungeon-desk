@@ -6,6 +6,7 @@ import styles from "./add-combatant-modal.module.scss";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
 import NumericInput from "@src/shared/ui/numeric-input";
+import NpcSearchAutocomplete from "@src/features/add-combatant/ui/npc-search-autocomplete";
 
 interface AddCombatantModalProps {
   isOpen: boolean;
@@ -42,21 +43,36 @@ const AddCombatantModal = ({ isOpen, onClose }: AddCombatantModalProps) => {
             </select>
           </label>
         </div>
-        <div className={styles.control}>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={state.name}
-              onChange={actions.handleNameChange}
-              placeholder="Enter name..."
-            />
-          </label>
-          {state.errors.name && <div className={styles.error}>{state.errors.name}</div>}
-        </div>
+
+        {state.type === "npc" && (
+          <>
+            <div className={styles.control}>
+              <label>
+                Name:
+                <NpcSearchAutocomplete
+                  value={state.name}
+                  onSelectNpc={actions.handleNpcSelect}
+                  onChange={actions.handleNameChange}
+                />
+              </label>
+            </div>
+          </>
+        )}
 
         {state.type === "player" && (
           <>
+            <div className={styles.control}>
+              <label>
+                Name:
+                <input
+                  type="text"
+                  value={state.name}
+                  onChange={actions.handleNameChange}
+                  placeholder="Enter name..."
+                />
+              </label>
+              {state.errors.name && <div className={styles.error}>{state.errors.name}</div>}
+            </div>
             <div className={styles.control}>
               <label>
                 Class:
