@@ -1,5 +1,5 @@
 import styles from "./main-page.module.scss";
-import CombatPanel from "@src/widgets/combat-panel/ui/combat-panel";
+import CombatPanel from "@src/widgets/combat-panel/ui";
 
 const MainPage = () => {
   return (

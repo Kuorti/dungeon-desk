@@ -3,6 +3,7 @@ import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
 import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-avalable-hp.ts";
+import { combatantApi } from "@src/entities/combatant/api/api.ts";
 
 const DEFAULT_VALUES = {
   initiative: 1,
@@ -126,6 +127,23 @@ export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
     onClose();
   };
 
+  const handleNpcSelect = async (npcIndex: string) => {
+    try {
+      const fullData = await combatantApi.fetchDetails(npcIndex);
+      const npcHp = fullData.hit_points || 1;
+
+      handleNameChange({
+        target: { value: fullData.name },
+      } as ChangeEvent<HTMLInputElement>);
+
+      handleMaxHpChange(npcHp);
+      setIsCurrentHpDirty(false);
+      setCurrentHp(npcHp);
+    } catch (error) {
+      console.error("Error setting NPC data: ", error);
+    }
+  };
+
   return {
     state: { type, name, initiative, maxHp, currentHp, errors, isValid, playerClass },
     actions: {
@@ -139,6 +157,7 @@ export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
       handleClassChange,
       handleCurrentHpChange,
       handleSubmit,
+      handleNpcSelect,
     },
   };
 };

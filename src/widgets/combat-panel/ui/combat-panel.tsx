@@ -6,9 +6,9 @@ import { useState } from "react";
 import { selectSortedCombatants } from "@src/features/combat/model/selectors.ts";
 import { useShallow } from "zustand/react/shallow";
 import AddCombatantModal from "@src/features/add-combatant";
-import { HitPointsChanger } from "@src/features/combat/ui/hit-points-changer/hit-points-changer.tsx";
 import CombatantConditionsGrid from "@src/features/combat/ui/combatant-conditions-grid";
 import DeleteCombatantButton from "@src/features/combat/ui/delete-combatant";
+import HitPointsChanger from "@src/features/combat/ui/hit-points-changer";
 
 const CombatPanel = () => {
   const currentRound = useCombatStore((s) => s.currentRound);

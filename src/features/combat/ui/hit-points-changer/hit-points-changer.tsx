@@ -7,7 +7,7 @@ type Props = {
   combatant: Combatant;
 };
 
-export const HitPointsChanger = ({ combatant }: Props) => {
+const HitPointsChanger = ({ combatant }: Props) => {
   const updateHealthScore = useCombatStore((s) => s.updateCombatantHealthScore);
   const handleHealthScoreChange = (delta: number) => {
     updateHealthScore(combatant.id, delta);
@@ -37,3 +37,5 @@ export const HitPointsChanger = ({ combatant }: Props) => {
     </div>
   );
 };
+
+export default HitPointsChanger;
