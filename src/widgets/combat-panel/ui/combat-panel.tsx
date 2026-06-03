@@ -25,7 +25,7 @@ const CombatPanel = () => {
 
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} ${isCombatantsModalOpen ? styles.blurred : ''}`}>
         <span>Round: {currentRound}</span>
         <div className={styles.combatantsList}>
           {sortedCombatants.map((combatant) => (

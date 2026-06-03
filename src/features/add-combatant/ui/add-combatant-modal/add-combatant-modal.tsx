@@ -52,7 +52,7 @@ const AddCombatantModal = ({ isOpen, onClose }: AddCombatantModalProps) => {
                 <NpcSearchAutocomplete
                   value={state.name}
                   onSelectNpc={actions.handleNpcSelect}
-                  onChange={actions.handleNameChange}
+                  onChange={(value) => actions.handleNameChange(value)}
                 />
               </label>
             </div>
@@ -67,7 +67,7 @@ const AddCombatantModal = ({ isOpen, onClose }: AddCombatantModalProps) => {
                 <input
                   type="text"
                   value={state.name}
-                  onChange={actions.handleNameChange}
+                  onChange={(event) => actions.handleNameChange(event.target.value)}
                   placeholder="Enter name..."
                 />
               </label>

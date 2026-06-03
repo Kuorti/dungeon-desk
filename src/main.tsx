@@ -8,7 +8,17 @@ import { loadWelcomePageAccess } from "@src/pages/welcome-page/model/load-welcom
 import MainPage from "@src/pages/main-page";
 import { loadMainPageAccess } from "@src/pages/main-page/model/load-main-page-access.ts";
 import { routes } from "@src/shared/routes/routes.ts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from "@src/shared/ui/toast/toast-container.tsx";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +49,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router}></RouterProvider>
+      <ToastContainer />
+    </QueryClientProvider>
   </StrictMode>,
 );

@@ -1,4 +1,4 @@
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
@@ -51,8 +51,8 @@ export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
     setInitiative(DEFAULT_VALUES.initiative);
   };
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const handleNameChange = (value: string) => {
+    setName(value);
     setTouched((prev) => ({ ...prev, name: true }));
   };
 
@@ -132,10 +132,7 @@ export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
       const fullData = await combatantApi.fetchDetails(npcIndex);
       const npcHp = fullData.hit_points || 1;
 
-      handleNameChange({
-        target: { value: fullData.name },
-      } as ChangeEvent<HTMLInputElement>);
-
+      handleNameChange(fullData.name);
       handleMaxHpChange(npcHp);
       setIsCurrentHpDirty(false);
       setCurrentHp(npcHp);

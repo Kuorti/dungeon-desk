@@ -4,7 +4,7 @@ import styles from "./npc-search-autocomplete.module.scss";
 
 interface AutocompleteProps {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   onSelectNpc: (index: string) => void;
 }
 
@@ -31,41 +31,43 @@ const NpcSearchAutocomplete = ({ value, onChange, onSelectNpc }: AutocompletePro
     filteredNpcs.length === 1 && filteredNpcs[0].name.toLowerCase() === value.toLowerCase();
 
   return (
-    <div ref={containerRef}>
-      <input
-        type="text"
-        value={value}
-        placeholder="Type NPC name..."
-        disabled={isLoading}
-        onChange={(e) => {
-          onChange(e);
-          setIsOpen(true);
-        }}
-        onFocus={() => {
-          if (!isExactMatch) {
+    <>
+      <div ref={containerRef}>
+        <input
+          type="text"
+          value={value}
+          placeholder="Type NPC name..."
+          disabled={isLoading}
+          onChange={(e) => {
+            onChange(e.target.value);
             setIsOpen(true);
-          }
-        }}
-      />
+          }}
+          onFocus={() => {
+            if (!isExactMatch) {
+              setIsOpen(true);
+            }
+          }}
+        />
 
-      {isOpen && filteredNpcs.length > 0 && !isExactMatch && (
-        <ul className={styles.dropdown}>
-          {filteredNpcs.map((npc) => (
-            <li
-              className={styles.dropdownElement}
-              key={npc.index}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                onSelectNpc(npc.index);
-                setIsOpen(false);
-              }}
-            >
-              {npc.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+        {isOpen && filteredNpcs.length > 0 && !isExactMatch && (
+          <ul className={styles.dropdown}>
+            {filteredNpcs.map((npc) => (
+              <li
+                className={styles.dropdownElement}
+                key={npc.index}
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  onSelectNpc(npc.index);
+                  setIsOpen(false);
+                }}
+              >
+                {npc.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 };
 

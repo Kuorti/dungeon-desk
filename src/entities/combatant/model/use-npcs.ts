@@ -1,19 +1,26 @@
-import { useEffect, useState } from "react";
-import { NpcShortInfo } from "@src/entities/combatant/model/types.ts";
 import { combatantApi } from "@src/entities/combatant/api/api.ts";
+import { useQuery } from "@tanstack/react-query";
+import { useToastStore } from "@src/shared/ui/toast/use-toast-store.ts";
+import { useEffect } from "react";
 
 export function useNpcs() {
-  const [npcs, setNpcs] = useState<NpcShortInfo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    data: npcs = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["npcs"],
+    queryFn: () => combatantApi.fetchList(),
+    // staleTime: Infinity,
+  });
+
+  const addToast = useToastStore((state) => state.addToast);
 
   useEffect(() => {
-    combatantApi
-      .fetchList()
-      .then(setNpcs)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    if (error) {
+      addToast("NPC list hasn't been loaded", "warning");
+    }
+  }, [error, addToast]);
 
-  return { npcs, loading, error };
+  return { npcs, loading: isLoading, error };
 }

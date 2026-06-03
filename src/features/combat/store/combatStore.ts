@@ -1,40 +1,21 @@
 import { create } from "zustand/react";
 import { persist } from "zustand/middleware";
 import { CombatState } from "@src/features/combat/types/combat.ts";
-import { conditions } from "@src/shared/constants/conditions.ts";
 import { Combatant } from "@src/entities/combatant/model/combatant.ts";
 import { getSortedCombatants } from "@src/features/combat/model/selectors.ts";
+import {
+  applyUnconsciousCondition,
+  calculateHealthChange,
+  toggleCondition,
+} from "@src/features/combat/model/combat-rules.ts";
 
 export const useCombatStore = create<CombatState>()(
   persist(
     (set, get) => ({
       id: null,
       currentRound: 1,
-      currentCombatantId: "2",
-      combatants: {
-        "1": {
-          id: "1",
-          name: "Nastya",
-          isPlayer: true,
-          playerClass: "bard",
-          healthScore: 22,
-          temporalHealthScore: 0,
-          maxHealthScore: 22,
-          conditions: [],
-          initiative: 1,
-        },
-        "2": {
-          id: "2",
-          name: "Grisha",
-          isPlayer: true,
-          playerClass: "paladin",
-          healthScore: 22,
-          temporalHealthScore: 0,
-          maxHealthScore: 30,
-          conditions: [],
-          initiative: 3,
-        },
-      } as Record<string, Combatant>,
+      currentCombatantId: null,
+      combatants: {} as Record<string, Combatant>,
       setCombatId: (id) => set({ id }),
       setNextTurn: () => {
         const currentRound = get().currentRound;
@@ -45,53 +26,34 @@ export const useCombatStore = create<CombatState>()(
       updateCombatantHealthScore: (combatantId: string, delta: number) => {
         const currentCombatants = get().combatants;
         const targetCombatant = currentCombatants[combatantId];
-        const { deleteCombatant, toggleCombatantCondition } = get();
+        const { deleteCombatant } = get();
 
         if (!targetCombatant) {
           return;
         }
 
-        const isMaxHealth = targetCombatant.healthScore === targetCombatant.maxHealthScore;
-        let temporalHealthScore = 0;
-        let healthScore = targetCombatant.healthScore;
+        const { healthScore, temporalHealthScore } = calculateHealthChange(targetCombatant, delta);
+        let updatedCombatant: Combatant = {
+          ...targetCombatant,
+          healthScore,
+          temporalHealthScore,
+        };
 
-        if (isMaxHealth) {
-          temporalHealthScore =
-            targetCombatant.temporalHealthScore === 0 && delta < 0
-              ? 0
-              : targetCombatant.temporalHealthScore + delta;
-        }
-
-        if (
-          !isMaxHealth ||
-          (isMaxHealth && delta < 0 && targetCombatant.temporalHealthScore === 0)
-        ) {
-          healthScore = healthScore + delta;
-        }
-
-        if (healthScore < 0) {
-          healthScore = 0;
+        if (healthScore === 0) {
+          if (targetCombatant.isPlayer) {
+            updatedCombatant = applyUnconsciousCondition(updatedCombatant);
+          } else {
+            deleteCombatant(combatantId);
+            return;
+          }
         }
 
         set({
           combatants: {
             ...currentCombatants,
-            [combatantId]: {
-              ...targetCombatant,
-              healthScore,
-              temporalHealthScore,
-            },
+            [combatantId]: updatedCombatant,
           },
         });
-
-        if (healthScore === 0) {
-          if (targetCombatant.isPlayer) {
-            const unconsciousId = "15";
-            toggleCombatantCondition(combatantId, unconsciousId);
-          } else {
-            deleteCombatant(combatantId);
-          }
-        }
       },
       selectNextCombatant: () => {
         const { combatants, currentCombatantId, setNextTurn } = get();
@@ -119,21 +81,7 @@ export const useCombatStore = create<CombatState>()(
           return;
         }
 
-        const hasCondition = targetCombatant.conditions.some(
-          (condition) => condition.id === conditionId,
-        );
-
-        let updatedConditions;
-        if (hasCondition) {
-          updatedConditions = targetCombatant.conditions.filter(
-            (condition) => condition.id !== conditionId,
-          );
-        } else {
-          const conditionToAppend = conditions.find((c) => c.id === conditionId);
-          updatedConditions = conditionToAppend
-            ? [...targetCombatant.conditions, conditionToAppend]
-            : targetCombatant.conditions;
-        }
+        const updatedConditions = toggleCondition(targetCombatant.conditions, conditionId);
 
         set({
           combatants: {
@@ -155,16 +103,36 @@ export const useCombatStore = create<CombatState>()(
         });
       },
       deleteCombatant: (combatantId: string) => {
-        const { currentCombatantId, selectNextCombatant } = get();
-        const currentCombatants = get().combatants;
-        const { [combatantId]: _, ...restCombatants } = currentCombatants;
+        const { currentCombatantId, combatants, setNextTurn } = get();
+        const { [combatantId]: _, ...restCombatants } = combatants;
 
-        if (combatantId === currentCombatantId) {
-          selectNextCombatant();
+        if (combatantId !== currentCombatantId) {
+          set({ combatants: restCombatants });
+          return;
+        }
+
+        const sorted = getSortedCombatants(combatants);
+        const currentIndex = sorted.findIndex((c) => c.id === combatantId);
+
+        let nextCombatantId: string;
+
+        if (sorted.length <= 1) {
+          nextCombatantId = "";
+        } else {
+          const nextIndex = currentIndex + 1;
+
+          if (nextIndex >= sorted.length) {
+            const remainingSorted = getSortedCombatants(restCombatants);
+            nextCombatantId = remainingSorted[0]?.id || "";
+            setNextTurn();
+          } else {
+            nextCombatantId = sorted[nextIndex].id;
+          }
         }
 
         set({
           combatants: restCombatants,
+          currentCombatantId: nextCombatantId,
         });
       },
     }),
