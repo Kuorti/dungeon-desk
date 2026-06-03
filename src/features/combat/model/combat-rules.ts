@@ -4,21 +4,38 @@ import { conditions } from "@src/shared/constants/conditions.ts";
 import { Condition } from "@src/shared/types/condition.ts";
 
 export function calculateHealthChange(combatant: Combatant, delta: number) {
-  const isMaxHealth = combatant.healthScore === combatant.maxHealthScore;
-  let temporalHealthScore = combatant.temporalHealthScore;
   let healthScore = combatant.healthScore;
+  let temporalHealthScore = combatant.temporalHealthScore;
 
-  if (isMaxHealth) {
-    temporalHealthScore =
-      combatant.temporalHealthScore === 0 && delta < 0 ? 0 : combatant.temporalHealthScore + delta;
-  }
+  if (delta < 0) {
+    const damageScore = Math.abs(delta);
 
-  if (!isMaxHealth || (isMaxHealth && delta < 0 && combatant.temporalHealthScore === 0)) {
-    healthScore = healthScore + delta;
-  }
+    if (temporalHealthScore > 0) {
+      if (damageScore <= temporalHealthScore) {
+        temporalHealthScore -= damageScore;
+      } else {
+        const leftoverDamage = damageScore - temporalHealthScore;
+        temporalHealthScore = 0;
+        healthScore -= leftoverDamage;
+      }
+    } else {
+      healthScore -= damageScore;
+    }
 
-  if (healthScore < 0) {
-    healthScore = 0;
+    if (healthScore < 0) {
+      healthScore = 0;
+    }
+  } else {
+    const healScore = Math.abs(delta);
+    const availableHealScore = combatant.maxHealthScore - combatant.healthScore;
+
+    if (healScore <= availableHealScore) {
+      healthScore += healScore;
+    } else {
+      const leftoverHeal = healScore - availableHealScore;
+      healthScore = combatant.maxHealthScore;
+      temporalHealthScore = combatant.temporalHealthScore + leftoverHeal;
+    }
   }
 
   return { healthScore, temporalHealthScore };
