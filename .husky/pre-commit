@@ -11,3 +11,4 @@ if ! echo "$branch_name" | grep -E "$BRANCH_NAME_PATTERN" > /dev/null; then
 fi
 
 npm run lint-staged
+npm run test:run

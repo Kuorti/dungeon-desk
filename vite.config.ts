@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
@@ -11,5 +11,9 @@ export default defineConfig({
       "@src": path.resolve(__dirname, "./src"),
       "@styles": path.resolve(__dirname, "./src/app/styles"),
     },
+  },
+  test: {
+    globals: true,
+    environment: "node",
   },
 });
