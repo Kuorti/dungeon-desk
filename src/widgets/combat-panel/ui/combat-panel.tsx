@@ -9,6 +9,7 @@ import AddCombatantModal from "@src/features/add-combatant";
 import CombatantConditionsGrid from "@src/features/combat/ui/combatant-conditions-grid";
 import DeleteCombatantButton from "@src/features/combat/ui/delete-combatant";
 import HitPointsChanger from "@src/features/combat/ui/hit-points-changer";
+import clsx from "clsx";
 
 const CombatPanel = () => {
   const currentRound = useCombatStore((s) => s.currentRound);
@@ -25,7 +26,7 @@ const CombatPanel = () => {
 
   return (
     <>
-      <div className={`${styles.wrapper} ${isCombatantsModalOpen ? styles.blurred : ''}`}>
+      <div className={clsx(styles.wrapper, { [styles.blurred]: isCombatantsModalOpen })}>
         <span>Round: {currentRound}</span>
         <div className={styles.combatantsList}>
           {sortedCombatants.map((combatant) => (

@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import styles from "./toast.module.scss";
 import { useToastStore } from "@src/shared/ui/toast/use-toast-store.ts";
 import { useEffect, useRef } from "react";
+import clsx from "clsx";
 
 export const ToastContainer = () => {
   const toasts = useToastStore((state) => state.toasts);
@@ -28,7 +29,7 @@ export const ToastContainer = () => {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`${styles.toast} ${styles[toast.type]}`}
+          className={clsx(styles.toast, styles[toast.type])}
           onClick={() => removeToast(toast.id)}
         >
           <span className={styles.icon}>

@@ -1,5 +1,6 @@
 import styles from "./delete-combatant.module.scss";
 import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
+import clsx from "clsx";
 
 type Props = {
   className: string;
@@ -14,7 +15,7 @@ const DeleteCombatantButton = ({ className, combatantId }: Props) => {
 
   return (
     <button
-      className={`${styles.button} ${className}`}
+      className={clsx(styles.button, className)}
       onClick={handleDeleteCombatant}
       aria-label="Delete combatant"
     >
