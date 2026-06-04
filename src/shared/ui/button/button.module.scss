@@ -14,6 +14,7 @@
     $color-accent-warning 0%,
     color.adjust($color-accent-warning, $lightness: -12%) 100%
   );
+  text-wrap: nowrap;
 
   &:hover {
     background-color: rgb(125 189 203 / 10%);

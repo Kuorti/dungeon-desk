@@ -10,8 +10,12 @@ import CombatantConditionsGrid from "@src/features/combat/ui/combatant-condition
 import DeleteCombatantButton from "@src/features/combat/ui/delete-combatant";
 import HitPointsChanger from "@src/features/combat/ui/hit-points-changer";
 import clsx from "clsx";
+import { LootResult } from "@src/features/combat/types/loot-result.ts";
+import { generateCombatLoot } from "@src/features/combat/model/loot-generator.ts";
+import { LootModal } from "@src/features/combat/ui/loot-modal/loot-modal.tsx";
 
 const CombatPanel = () => {
+  const combatants = useCombatStore((state) => state.combatants);
   const currentRound = useCombatStore((s) => s.currentRound);
   const currentCombatantId = useCombatStore((s) => s.currentCombatantId);
   const selectNextCombatant = useCombatStore((s) => s.selectNextCombatant);
@@ -21,13 +25,30 @@ const CombatPanel = () => {
   const handleSelectNextCombatant = () => {
     selectNextCombatant();
   };
+  const endCombat = useCombatStore((state) => state.endCombat);
   const [isCombatantsModalOpen, setIsCombatantsModalOpen] = useState(false);
+  const [isLootModalOpen, setIsLootModalOpen] = useState(false);
+  const [generatedLoot, setGeneratedLoot] = useState<LootResult | null>(null);
   const sortedCombatants = useCombatStore(useShallow(selectSortedCombatants));
+  const combatantsCount = Object.keys(combatants).length;
+  const isCombatImpossibleToRun = combatantsCount < 2;
+  const handleEndCombat = () => {
+    const loot = generateCombatLoot(combatants);
+
+    setGeneratedLoot(loot);
+    setIsLootModalOpen(true);
+    endCombat();
+  };
 
   return (
     <>
-      <div className={clsx(styles.wrapper, { [styles.blurred]: isCombatantsModalOpen })}>
-        <span>Round: {currentRound}</span>
+      <div className={clsx(styles.wrapper, { [styles.blurred]: isCombatantsModalOpen || isLootModalOpen })}>
+        <div className={styles.topRow}>
+          <span>Round: {currentRound}</span>
+          <Button onClick={handleEndCombat} size={"xs"}>
+            End Combat
+          </Button>
+        </div>
         <div className={styles.combatantsList}>
           {sortedCombatants.map((combatant) => (
             <CombatantRow
@@ -56,7 +77,7 @@ const CombatPanel = () => {
           <Button onClick={handleOpenCombatantsModal} size={"m"}>
             Add combatant
           </Button>
-          <Button onClick={handleSelectNextCombatant} size={"m"}>
+          <Button onClick={handleSelectNextCombatant} size={"m"} disabled={isCombatImpossibleToRun}>
             Next turn
           </Button>
         </div>
@@ -65,6 +86,11 @@ const CombatPanel = () => {
         isOpen={isCombatantsModalOpen}
         onClose={() => setIsCombatantsModalOpen(false)}
       ></AddCombatantModal>
+      <LootModal
+        isOpen={isLootModalOpen}
+        onClose={() => setIsLootModalOpen(false)}
+        loot={generatedLoot}
+      />
     </>
   );
 };

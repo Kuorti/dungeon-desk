@@ -8,4 +8,5 @@ export interface CombatActions {
   toggleCombatantCondition: (combatantId: string, conditionId: string) => void;
   addCombatant: (combatant: Combatant) => void;
   deleteCombatant: (combatantId: string) => void;
+  endCombat: () => void;
 }
