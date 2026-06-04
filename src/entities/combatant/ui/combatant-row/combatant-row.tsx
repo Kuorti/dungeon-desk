@@ -2,6 +2,7 @@ import { Combatant } from "@src/entities/combatant/model/combatant.ts";
 import styles from "./combatant-row.module.scss";
 import { CombatantLogo } from "@src/entities/combatant/ui/combatant-logo/combatant-logo.tsx";
 import { ReactNode } from "react";
+import clsx from "clsx";
 
 type Props = {
   className: string;
@@ -21,7 +22,7 @@ const CombatantRow = ({
   className,
 }: Props) => {
   return (
-    <div className={`${styles.wrapper} ${isActive ? styles.isActive : ""} ${className}`}>
+    <div className={clsx(styles.wrapper, className, { [styles.isActive]: isActive })}>
       <div className={styles.left}>
         <CombatantLogo combatant={combatant}></CombatantLogo>
         <span className={styles.name}>{combatant.name}</span>

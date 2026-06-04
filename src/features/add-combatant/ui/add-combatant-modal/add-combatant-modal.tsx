@@ -1,7 +1,7 @@
 import Modal from "@src/shared/ui/modal";
 import Button from "@src/shared/ui/button";
-import { useAddCombatantForm } from "@src/features/combat/model/use-add-combatant-form.ts";
-import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-avalable-hp.ts";
+import { useCombatantForm } from "@src/features/combat/model/use-combatant-form.ts";
+import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-available-hp.ts";
 import styles from "./add-combatant-modal.module.scss";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
@@ -16,7 +16,7 @@ interface AddCombatantModalProps {
 type CombatantType = "player" | "npc";
 
 const AddCombatantModal = ({ isOpen, onClose }: AddCombatantModalProps) => {
-  const { state, actions } = useAddCombatantForm(isOpen, onClose);
+  const { state, actions } = useCombatantForm(isOpen, onClose);
 
   return (
     <Modal
@@ -45,18 +45,16 @@ const AddCombatantModal = ({ isOpen, onClose }: AddCombatantModalProps) => {
         </div>
 
         {state.type === "npc" && (
-          <>
-            <div className={styles.control}>
-              <label>
-                Name:
-                <NpcSearchAutocomplete
-                  value={state.name}
-                  onSelectNpc={actions.handleNpcSelect}
-                  onChange={(value) => actions.handleNameChange(value)}
-                />
-              </label>
-            </div>
-          </>
+          <div className={styles.control}>
+            <label>
+              Name:
+              <NpcSearchAutocomplete
+                value={state.name}
+                onSelectNpc={actions.handleNpcSelect}
+                onChange={(value) => actions.handleNameChange(value)}
+              />
+            </label>
+          </div>
         )}
 
         {state.type === "player" && (

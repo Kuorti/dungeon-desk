@@ -1,9 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNpcs } from "@src/entities/combatant/model/use-npcs.ts";
 
-export function useNpcSearch() {
+export function useNpcSearch(searchQuery: string) {
   const { npcs, loading, error } = useNpcs();
-  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredNpcs = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -15,7 +14,6 @@ export function useNpcSearch() {
 
   return {
     searchQuery,
-    setSearchQuery,
     filteredNpcs,
     isLoading: loading,
     error,

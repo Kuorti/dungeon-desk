@@ -11,7 +11,6 @@ export function useNpcs() {
   } = useQuery({
     queryKey: ["npcs"],
     queryFn: () => combatantApi.fetchList(),
-    // staleTime: Infinity,
   });
 
   const addToast = useToastStore((state) => state.addToast);

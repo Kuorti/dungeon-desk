@@ -2,17 +2,18 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
-import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-avalable-hp.ts";
-import { combatantApi } from "@src/entities/combatant/api/api.ts";
+import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-available-hp.ts";
+import { createCombatant } from "@src/features/add-combatant/model/combatant-factory.ts";
+import { useNpcDetails } from "@src/features/add-combatant/model/use-npc-details.ts";
 
 const DEFAULT_VALUES = {
   initiative: 1,
   maxHp: 10,
 };
 
-export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
+export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
   const addCombatant = useCombatStore((state) => state.addCombatant);
-
+  const { loadNpcDetails, isNpcDetailsLoading } = useNpcDetails();
   const [type, setType] = useState<"player" | "npc">("player");
   const [playerClass, setPlayerClass] = useState<PlayerClass | undefined>(undefined);
   const [name, setName] = useState("");
@@ -112,37 +113,44 @@ export const useAddCombatantForm = (isOpen: boolean, onClose: () => void) => {
       return;
     }
 
-    addCombatant({
-      id: crypto.randomUUID(),
-      name: name.trim(),
-      isPlayer: type === "player",
-      playerClass: type === "player" ? playerClass : undefined,
-      healthScore: currentHp,
-      temporalHealthScore: 0,
-      maxHealthScore: maxHp,
-      conditions: [],
-      initiative: initiative || DEFAULT_VALUES.initiative,
+    const newCombatant = createCombatant({
+      name,
+      type,
+      maxHp,
+      currentHp,
+      initiative,
+      playerClass,
     });
 
+    addCombatant(newCombatant);
     onClose();
   };
 
   const handleNpcSelect = async (npcIndex: string) => {
-    try {
-      const fullData = await combatantApi.fetchDetails(npcIndex);
-      const npcHp = fullData.hit_points || 1;
+    const npcStats = await loadNpcDetails(npcIndex);
 
-      handleNameChange(fullData.name);
-      handleMaxHpChange(npcHp);
-      setIsCurrentHpDirty(false);
-      setCurrentHp(npcHp);
-    } catch (error) {
-      console.error("Error setting NPC data: ", error);
+    if (!npcStats) {
+      return;
     }
+
+    handleNameChange(npcStats.name);
+    handleMaxHpChange(npcStats.hp);
+    setIsCurrentHpDirty(false);
+    setCurrentHp(npcStats.hp);
   };
 
   return {
-    state: { type, name, initiative, maxHp, currentHp, errors, isValid, playerClass },
+    state: {
+      type,
+      name,
+      initiative,
+      maxHp,
+      currentHp,
+      errors,
+      isValid,
+      playerClass,
+      isNpcDetailsLoading,
+    },
     actions: {
       setType,
       setInitiative,

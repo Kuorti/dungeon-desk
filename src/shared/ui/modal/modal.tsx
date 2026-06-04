@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ModalProps } from "@src/shared/ui/modal/modal-props.ts";
 import styles from "./modal.module.scss";
+import clsx from "clsx";
 
 const Modal = ({
   isOpen,
@@ -50,7 +51,7 @@ const Modal = ({
   return (
     <dialog
       ref={dialogRef}
-      className={`${styles.wrapper} ${className}`}
+      className={clsx(styles.wrapper, className)}
       onClose={onClose}
       onClick={handleOverlayClick}
     >
