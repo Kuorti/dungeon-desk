@@ -135,6 +135,13 @@ export const useCombatStore = create<CombatState>()(
           currentCombatantId: nextCombatantId,
         });
       },
+      endCombat: () => {
+        set({
+          combatants: {},
+          currentRound: 1,
+          currentCombatantId: null,
+        });
+      },
     }),
     {
       name: "combat-storage",
