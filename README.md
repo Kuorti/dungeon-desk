@@ -37,6 +37,8 @@ An interactive combat tracker designed for DM's to manage D&D combat encounters.
 * **Testing:** Vitest
 * **Automation:** GitHub Actions (CI pipeline for linting and testing), Husky (pre-commit checks for branch names and staged files)
 
+---
+
 ## 📸 Screenshots
 
 ![combat-panel.png](src/shared/assets/screenshots/combat-panel.png)
