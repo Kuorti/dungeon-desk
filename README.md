@@ -18,15 +18,13 @@ An interactive combat tracker designed for DM's to manage D&D combat encounters.
 
 ---
 
-## 🏗️ Architecture & Performance
+## 🏗️ Key Engineering Decisions
 
-The application follows strict architectural standards to ensure clean code and avoid common performance issues:
-
-* **Feature-Driven Development (FSD):** Code structured into standard layers (`shared`, `entities`, `features`, `pages`, etc.) with explicit Public APIs (`index.ts`) to avoid cross-imports.
-* **Zustand Optimization:** Global state is kept thin. Heavy derived computations are isolated via custom selectors wrapped in `useShallow` to prevent redundant rerenders.
-* **TanStack Query:** Used for server state management. It caches the NPC database, reducing network load to zero during user input.
-* **Top Layer & Portals:** Custom toast notifications use a mix of **React Portals** and the **Native Popover API** so they render properly in the browser's top layer without colliding with anything else.
-* **Single Source of Truth:** Debounced values are passed directly from the form state into the lookup hook, eliminating the need for cascading `useEffect` syncs.
+- Feature-Sliced Design architecture
+- Separation of server and client state (React Query + Zustand)
+- Derived state extracted into selectors
+- CI pipeline with automated checks
+- Type-safe architecture with strict boundaries
 
 ---
 
@@ -39,3 +37,8 @@ The application follows strict architectural standards to ensure clean code and 
 * **Testing:** Vitest
 * **Automation:** GitHub Actions (CI pipeline for linting and testing), Husky (pre-commit checks for branch names and staged files)
 
+## 📸 Screenshots
+
+![combat-panel.png](src/shared/assets/screenshots/combat-panel.png)
+![add-npc.png](src/shared/assets/screenshots/add-npc.png)
+![loot.png](src/shared/assets/screenshots/loot.png)

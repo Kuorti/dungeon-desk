@@ -7,10 +7,14 @@
   border: 1px solid $color-element-active;
   max-height: 300px;
   overflow: auto;
+  padding: $spacing-s;
 
   .dropdownElement {
     cursor: pointer;
     transition: color 0.4s;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
       color: $color-main-selected;
