@@ -5,6 +5,7 @@ import path from "path";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
+  base: "/dungeon-desk/",
   plugins: [react(), tsconfigPaths(), svgr()],
   resolve: {
     alias: {
