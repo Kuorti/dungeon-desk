@@ -1,7 +1,7 @@
 import Button from "@src/shared/ui/button";
 import styles from "./combat-panel.module.scss";
 import CombatantRow from "@src/entities/combatant/ui/combatant-row/combatant-row.tsx";
-import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
+import { useCombatStore } from "@src/features/combat/store/combat-store.ts";
 import { useState } from "react";
 import { selectSortedCombatants } from "@src/features/combat/model/selectors.ts";
 import { useShallow } from "zustand/react/shallow";

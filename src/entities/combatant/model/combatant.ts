@@ -8,7 +8,7 @@ export interface Combatant {
   isPlayer: boolean;
   playerClass?: PlayerClass;
   healthScore: number;
-  temporalHealthScore: number;
+  temporaryHealthScore: number;
   maxHealthScore: number;
   conditions: Condition[];
   initiative: number;

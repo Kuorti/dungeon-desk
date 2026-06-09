@@ -11,11 +11,7 @@ export const ToastContainer = () => {
 
   useEffect(() => {
     if (containerRef.current && typeof containerRef.current.showPopover === "function") {
-      try {
-        containerRef.current.showPopover();
-      } catch (e) {
-
-      }
+      containerRef.current.showPopover();
     }
   }, []);
 

@@ -2,7 +2,7 @@ import styles from "./welcome-page.module.scss";
 import Button from "@src/shared/ui/button";
 import { useNavigate } from "react-router";
 import { routes } from "@src/shared/routes/routes.ts";
-import { useSessionStore } from "@src/features/session/store/sessionStore.ts";
+import { useSessionStore } from "@src/features/session/store/session-store.ts";
 
 const WelcomePage = () => {
   const navigate = useNavigate();

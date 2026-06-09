@@ -29,7 +29,6 @@ const router = createBrowserRouter([
         element: <Navigate to={`/${routes.main}`} replace />,
       },
       {
-        index: true,
         path: `/${routes.welcome}`,
         element: <WelcomePage />,
         loader: loadWelcomePageAccess,

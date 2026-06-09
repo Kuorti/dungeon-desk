@@ -6,6 +6,7 @@ import { getSortedCombatants } from "@src/features/combat/model/selectors.ts";
 import {
   applyUnconsciousCondition,
   calculateHealthChange,
+  increaseTemporaryHealthScore,
   toggleCondition,
 } from "@src/features/combat/model/combat-rules.ts";
 
@@ -16,11 +17,31 @@ export const useCombatStore = create<CombatState>()(
       currentRound: 1,
       currentCombatantId: null,
       combatants: {} as Record<string, Combatant>,
-      setCombatId: (id) => set({ id }),
       setNextTurn: () => {
         const currentRound = get().currentRound;
         set({
           currentRound: currentRound + 1,
+        });
+      },
+      addCombatantTemporaryHealthScore: (combatantId: string) => {
+        const currentCombatants = get().combatants;
+        const targetCombatant = currentCombatants[combatantId];
+
+        if (!targetCombatant) {
+          return;
+        }
+
+        const { healthScore, temporaryHealthScore } = increaseTemporaryHealthScore(targetCombatant);
+
+        set({
+          combatants: {
+            ...currentCombatants,
+            [combatantId]: {
+              ...targetCombatant,
+              healthScore,
+              temporaryHealthScore,
+            },
+          },
         });
       },
       updateCombatantHealthScore: (combatantId: string, delta: number) => {
@@ -32,11 +53,11 @@ export const useCombatStore = create<CombatState>()(
           return;
         }
 
-        const { healthScore, temporalHealthScore } = calculateHealthChange(targetCombatant, delta);
+        const { healthScore, temporaryHealthScore } = calculateHealthChange(targetCombatant, delta);
         let updatedCombatant: Combatant = {
           ...targetCombatant,
           healthScore,
-          temporalHealthScore,
+          temporaryHealthScore,
         };
 
         if (healthScore === 0) {
@@ -104,6 +125,7 @@ export const useCombatStore = create<CombatState>()(
       },
       deleteCombatant: (combatantId: string) => {
         const { currentCombatantId, combatants, setNextTurn } = get();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { [combatantId]: _, ...restCombatants } = combatants;
 
         if (combatantId !== currentCombatantId) {

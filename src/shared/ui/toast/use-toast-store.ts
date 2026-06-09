@@ -22,9 +22,8 @@ export const useToastStore = create<ToastStore>((set, get) => ({
     set((state) => ({ toasts: [...state.toasts, newToast] }));
 
     setTimeout(() => {
-      console.log("removeToast by timeout");
       get().removeToast(id);
-    }, 30000);
+    }, 3000);
   },
 
   removeToast: (id) => {

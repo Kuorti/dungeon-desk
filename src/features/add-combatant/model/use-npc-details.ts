@@ -15,7 +15,7 @@ export function useNpcDetails() {
         name: fullData.name,
         hp: fullData.hit_points || 1,
       };
-    } catch (error) {
+    } catch {
       addToast("Failed to load NPC stats from server", "error");
       return null;
     } finally {
