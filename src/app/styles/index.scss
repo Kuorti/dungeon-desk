@@ -74,6 +74,11 @@ input::-webkit-inner-spin-button {
 *,
 *::before,
 *::after {
+  scrollbar-color: rgb(0 0 0 / 30%) transparent;
+  scrollbar-width: thin;
+}
+
+* {
   &::-webkit-scrollbar {
     background-color: transparent;
     width: 10px;
@@ -85,12 +90,9 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
     border: 2px solid transparent;
     background-clip: padding-box;
-  }
 
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(0 0 0 / 50%);
+    &:hover {
+      background-color: rgb(0 0 0 / 50%);
+    }
   }
-
-  scrollbar-color: rgb(0 0 0 / 30%) transparent;
-  scrollbar-width: thin;
 }
