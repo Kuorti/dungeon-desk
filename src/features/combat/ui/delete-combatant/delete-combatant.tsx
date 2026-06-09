@@ -1,5 +1,5 @@
 import styles from "./delete-combatant.module.scss";
-import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
+import { useCombatStore } from "@src/features/combat/store/combat-store.ts";
 import clsx from "clsx";
 
 type Props = {

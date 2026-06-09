@@ -5,17 +5,17 @@ import { Condition } from "@src/shared/types/condition.ts";
 
 export function calculateHealthChange(combatant: Combatant, delta: number) {
   let healthScore = combatant.healthScore;
-  let temporalHealthScore = combatant.temporalHealthScore;
+  let temporaryHealthScore = combatant.temporaryHealthScore;
 
   if (delta < 0) {
     const damageScore = Math.abs(delta);
 
-    if (temporalHealthScore > 0) {
-      if (damageScore <= temporalHealthScore) {
-        temporalHealthScore -= damageScore;
+    if (temporaryHealthScore > 0) {
+      if (damageScore <= temporaryHealthScore) {
+        temporaryHealthScore -= damageScore;
       } else {
-        const leftoverDamage = damageScore - temporalHealthScore;
-        temporalHealthScore = 0;
+        const leftoverDamage = damageScore - temporaryHealthScore;
+        temporaryHealthScore = 0;
         healthScore -= leftoverDamage;
       }
     } else {
@@ -34,11 +34,18 @@ export function calculateHealthChange(combatant: Combatant, delta: number) {
     } else {
       const leftoverHeal = healScore - availableHealScore;
       healthScore = combatant.maxHealthScore;
-      temporalHealthScore = combatant.temporalHealthScore + leftoverHeal;
+      temporaryHealthScore = combatant.temporaryHealthScore + leftoverHeal;
     }
   }
 
-  return { healthScore, temporalHealthScore };
+  return { healthScore, temporaryHealthScore };
+}
+
+export function increaseTemporaryHealthScore(combatant: Combatant) {
+  const healthScore = combatant.healthScore;
+  const temporaryHealthScore = combatant.temporaryHealthScore;
+
+  return { healthScore, temporaryHealthScore: temporaryHealthScore + 1 };
 }
 
 export function applyUnconsciousCondition(combatant: Combatant): Combatant {

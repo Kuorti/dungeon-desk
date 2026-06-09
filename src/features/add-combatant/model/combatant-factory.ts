@@ -26,7 +26,7 @@ export function createCombatant({
     isPlayer,
     playerClass: isPlayer ? playerClass : undefined,
     healthScore: currentHp,
-    temporalHealthScore: 0,
+    temporaryHealthScore: 0,
     maxHealthScore: maxHp,
     conditions: [],
     initiative: initiative,

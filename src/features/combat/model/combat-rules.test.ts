@@ -13,7 +13,7 @@ const createMockCombatant = (overrides: Partial<Combatant> = {}): Combatant => (
   isPlayer: true,
   healthScore: 20,
   maxHealthScore: 20,
-  temporalHealthScore: 0,
+  temporaryHealthScore: 0,
   conditions: [],
   initiative: 10,
   ...overrides,
@@ -21,54 +21,54 @@ const createMockCombatant = (overrides: Partial<Combatant> = {}): Combatant => (
 
 describe("Combat Rules - calculateHealthChange", () => {
   test("should decrease HP when no temporary HP is present", () => {
-    const combatant = createMockCombatant({ healthScore: 20, maxHealthScore: 20, temporalHealthScore: 0 });
+    const combatant = createMockCombatant({ healthScore: 20, maxHealthScore: 20, temporaryHealthScore: 0 });
     const result = calculateHealthChange(combatant, -5);
 
     expect(result.healthScore).toBe(15);
-    expect(result.temporalHealthScore).toBe(0);
+    expect(result.temporaryHealthScore).toBe(0);
   });
 
   test("should decrease temporary HP if combatant has it", () => {
     const combatant = createMockCombatant({
       healthScore: 20,
       maxHealthScore: 20,
-      temporalHealthScore: 8,
+      temporaryHealthScore: 8,
     });
     const result = calculateHealthChange(combatant, -5);
 
     expect(result.healthScore).toBe(20);
-    expect(result.temporalHealthScore).toBe(3);
+    expect(result.temporaryHealthScore).toBe(3);
   });
 
   test("should decrease temporary HP first and main HP after", () => {
     const combatant = createMockCombatant({
       healthScore: 20,
       maxHealthScore: 20,
-      temporalHealthScore: 8,
+      temporaryHealthScore: 8,
     });
     const result = calculateHealthChange(combatant, -10);
 
     expect(result.healthScore).toBe(18);
-    expect(result.temporalHealthScore).toBe(0);
+    expect(result.temporaryHealthScore).toBe(0);
   });
 
   test("should increase main HP first and temporary HP after", () => {
     const combatant = createMockCombatant({
       healthScore: 18,
       maxHealthScore: 20,
-      temporalHealthScore: 6,
+      temporaryHealthScore: 6,
     });
     const result = calculateHealthChange(combatant, 5);
 
     expect(result.healthScore).toBe(20);
-    expect(result.temporalHealthScore).toBe(9);
+    expect(result.temporaryHealthScore).toBe(9);
   });
 
   test("health score should not drop below zero", () => {
     const combatant = createMockCombatant({
       healthScore: 5,
       maxHealthScore: 20,
-      temporalHealthScore: 0,
+      temporaryHealthScore: 0,
     });
     const result = calculateHealthChange(combatant, -100);
 

@@ -1,4 +1,4 @@
-import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
+import { useCombatStore } from "@src/features/combat/store/combat-store.ts";
 import { conditions } from "@src/shared/constants/conditions.ts";
 import styles from "./combatant-conditions-grid.module.scss";
 import clsx from "clsx";

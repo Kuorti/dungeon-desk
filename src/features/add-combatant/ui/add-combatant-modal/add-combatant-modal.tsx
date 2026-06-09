@@ -1,6 +1,6 @@
 import Modal from "@src/shared/ui/modal";
 import Button from "@src/shared/ui/button";
-import { useCombatantForm } from "@src/features/combat/model/use-combatant-form.ts";
+import { useCombatantForm } from "@src/features/add-combatant/model/use-combatant-form.ts";
 import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-available-hp.ts";
 import styles from "./add-combatant-modal.module.scss";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";

@@ -1,6 +1,6 @@
 import { redirect } from "react-router";
 import { routes } from "@src/shared/routes/routes.ts";
-import { useSessionStore } from "@src/features/session/store/sessionStore.ts";
+import { useSessionStore } from "@src/features/session/store/session-store.ts";
 
 export async function loadWelcomePageAccess() {
   const sessionId = useSessionStore.getState().sessionId;

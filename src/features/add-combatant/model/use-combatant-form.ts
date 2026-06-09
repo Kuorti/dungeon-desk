@@ -1,5 +1,5 @@
-import { SyntheticEvent, useEffect, useState } from "react";
-import { useCombatStore } from "@src/features/combat/store/combatStore.ts";
+import { SyntheticEvent, useState } from "react";
+import { useCombatStore } from "@src/features/combat/store/combat-store.ts";
 import { PlayerClass } from "@src/shared/types/player-class.ts";
 import { PLAYER_CLASSES } from "@src/shared/constants/player-classes.ts";
 import { MAX_AVAILABLE_HP } from "@src/shared/constants/max-available-hp.ts";
@@ -20,21 +20,17 @@ export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
   const [initiative, setInitiative] = useState(DEFAULT_VALUES.initiative);
   const [maxHp, setMaxHp] = useState(DEFAULT_VALUES.maxHp);
   const [currentHp, setCurrentHp] = useState(DEFAULT_VALUES.maxHp);
-  const [isCurrentHpDirty, setIsCurrentHpDirty] = useState(false);
   const [touched, setTouched] = useState({
     name: false,
     initiative: false,
     maxHp: false,
     currentHp: false,
   });
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
-  useEffect(() => {
-    if (!isCurrentHpDirty) {
-      setCurrentHp(maxHp);
-    }
-  }, [maxHp, isCurrentHpDirty]);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
 
-  useEffect(() => {
     if (isOpen) {
       setType("player");
       setPlayerClass(PLAYER_CLASSES[0].value);
@@ -42,10 +38,9 @@ export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
       setInitiative(DEFAULT_VALUES.initiative);
       setMaxHp(DEFAULT_VALUES.maxHp);
       setCurrentHp(DEFAULT_VALUES.maxHp);
-      setIsCurrentHpDirty(false);
       setTouched({ name: false, initiative: false, maxHp: false, currentHp: false });
     }
-  }, [isOpen]);
+  }
 
   const handleTypeChange = (newType: "player" | "npc") => {
     setType(newType);
@@ -68,11 +63,11 @@ export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
 
   const handleMaxHpChange = (value: number) => {
     setMaxHp(value);
+    setCurrentHp(value);
     setTouched((prev) => ({ ...prev, maxHp: true }));
   };
 
   const handleCurrentHpChange = (value: number) => {
-    setIsCurrentHpDirty(true);
     setCurrentHp(value);
     setTouched((prev) => ({ ...prev, currentHp: true }));
   };
@@ -97,13 +92,13 @@ export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
   };
 
   const isValid =
-    name.trim().length > 0 &&
+    Boolean(name.trim().length > 0 &&
     Number(maxHp) > 0 &&
     Number(maxHp) <= MAX_AVAILABLE_HP &&
     Number(currentHp) >= 0 &&
     Number(currentHp) <= Number(maxHp) &&
     initiative &&
-    initiative >= DEFAULT_VALUES.initiative;
+    initiative >= DEFAULT_VALUES.initiative);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -135,8 +130,7 @@ export const useCombatantForm = (isOpen: boolean, onClose: () => void) => {
 
     handleNameChange(npcStats.name);
     handleMaxHpChange(npcStats.hp);
-    setIsCurrentHpDirty(false);
-    setCurrentHp(npcStats.hp);
+    setCurrentHp(Math.min(npcStats.hp, MAX_AVAILABLE_HP));
   };
 
   return {
