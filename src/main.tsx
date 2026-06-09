@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./app/styles/index.scss";
 import App from "./app/ui/app.tsx";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import { createHashRouter, Navigate, RouterProvider } from "react-router";
 import WelcomePage from "@src/pages/welcome-page";
 import { loadWelcomePageAccess } from "@src/pages/welcome-page/model/load-welcome-page-access.ts";
 import MainPage from "@src/pages/main-page";
@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
     },
   },
 });
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
